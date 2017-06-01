@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/timeCircle.css">
+	<script src="js/jquery-1.11.2.min.js"></script>
+	<script src="js/raphael.js"></script>
+	<script src="js/timeCircle.js"></script>
+	<style>
+		*{padding: 0;margin:0;}
+		
+		div{
+			position: relative;
+			margin-bottom: 40px;
+		}
+	</style>
+</head>
+<body>
+	
+	<h2>百分比圆环：</h2>
+    <div id="paper1" class="processingbar"><div class="process-txt">80%</div></div>
+
+    <h2>圆环倒计时减少：</h2>
+    <div id="paper2" class="processingbar"></div>
+
+    <h2>圆环倒计时增加：</h2>
+    <div id="paper3" class="processingbar"></div>
+
+    <h2>圆环倒计时增加，文字水平对齐：</h2>
+    <div id="paper4" class="processingbar"></div>
+ 
+     
+    <script>
+
+    $(function(){
+
+// -------------------------百分比圆环--------------------------------------
+    	// 创建一个圆环
+		var cricle1 = $.fn.circleCountDown.createCricle({
+			parent: $('#paper1'),
+			w: 180,
+			R: 80,
+			sW: 20,
+			color: "#3080ec",
+			bgColor:"#e5e5e5",
+			startProgressPos: 80
+		});
+
+
+// -------------------------圆环倒计时减少--------------------------------------
+
+		// 创建一个圆环
+		var cricle2 = $.fn.circleCountDown.createCricle({
+			parent: $('#paper2'),
+			w: 180,
+			R: 80,
+			sW: 20,
+			color: "#3080ec",
+			bgColor:"#e5e5e5"
+		});
+
+		// 圆环倒计时
+		var option2 = {	
+			cricle: cricle2, // 圆环
+			parent: $('#paper2'),
+			totalTime: 100,	   //总的时间
+			remainTime: 100,		//剩余时间 = 结束时间 - 开始时间
+			startTime: 1495785600000,		//开始时间
+			endTime: 1495788300000,		//结束时间
+			currentTime: 1495785601000,	//当前时间
+			timeTxtAlign : 'vertical',
+			changeTime: 90,
+			animateType: 'cut'
+
+		}
+		$.fn.circleCountDown.cricleCount(option2);
+
+
+// -------------------------圆环倒计时增加--------------------------------------
+
+		// 创建一个圆环
+		var cricle3 = $.fn.circleCountDown.createCricle({
+			parent: $('#paper3'),
+			w: 180,
+			R: 80,
+			sW: 20,
+			color: "#3080ec",
+			bgColor:"#e5e5e5"
+		});
+
+		// 圆环倒计时
+		var option3 = {	
+			cricle: cricle3, 				// 圆环
+			parent: $('#paper3'),			// 承载圆环的容器
+			totalTime: 100,	   				// 总的时间
+			remainTime: 100,				// 剩余时间 = 结束时间 - 开始时间
+			startTime: 1495785600000,		// 开始时间
+			endTime: 1495788300000,			// 结束时间
+			currentTime: 1495785601000,		// 当前时间
+			timeTxtAlign : 'vertical',
+			changeTime: 90
+
+		}
+		$.fn.circleCountDown.cricleCount(option3);
+
+
+// ---------------------圆环倒计时增加，文字水平对齐-----------------------------------
+
+		// 创建一个圆环
+		var cricle4 = $.fn.circleCountDown.createCricle({
+			parent: $('#paper4'),
+			w: 180,
+			R: 80,
+			sW: 20,
+			color: "#3080ec",
+			bgColor:"#e5e5e5"
+		});
+
+		// 圆环倒计时
+		var option4 = {	
+			cricle: cricle4, 				// 圆环
+			parent: $('#paper4'),			// 承载圆环的容器
+			totalTime: 100,	   				// 总的时间
+			remainTime: 100,				// 剩余时间 = 结束时间 - 开始时间
+			startTime: 1495785600000,		// 开始时间
+			endTime: 1495788300000,			// 结束时间
+			currentTime: 1495785601000,		// 当前时间
+			changeTime: 90
+
+		}
+		$.fn.circleCountDown.cricleCount(option4);
+
+	})
+
+ 
+    </script>
+</body>
+</html>

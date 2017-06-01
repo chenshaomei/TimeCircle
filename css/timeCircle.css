@@ -1,0 +1,30 @@
+.processingbar {
+  text-align: center;
+  position: relative;
+}
+
+.processingbar .process-txt{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -19px;
+    
+}
+.processingbar .process-txt span{
+    display: inline-block;
+    *display: inline;
+    *zoom:1;
+    line-height: 18px;
+    font-size: 24px;
+    padding: 0 5px;
+    
+}
+.processingbar .process-txt span i{
+    display: block;
+    line-height: 16px;
+    font-style: normal;
+    font-size: 12px;
+    color: #999;
+    padding-top: 3px;
+}
