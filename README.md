@@ -31,15 +31,15 @@ var cricle3 = $.fn.circleCountDown.createCricle({
 
 // 圆环倒计时
 var option3 = {	
-	cricle: cricle3, 				// 圆环
+	cricle: cricle3, 			// 圆环
 	parent: $('#paper3'),			// 承载圆环的容器
-	totalTime: 100,	   				// 总的时间 s
-	remainTime: 100,				// 剩余时间 = 结束时间 - 开始时间 s
+	totalTime: 100,	   			// 总的时间 s
+	remainTime: 100,			// 剩余时间 = 结束时间 - 开始时间 s
 	startTime: 1495785600000,		// 开始时间 ms
 	endTime: 1495788300000,			// 结束时间 ms
 	currentTime: 1495785601000,		// 当前时间 ms
 	timeTxtAlign : 'vertical',
-	changeTime: 90                  // 剩余90秒，圆环改变颜色
+	changeTime: 90                  	// 剩余90秒，圆环改变颜色
 
 }
 $.fn.circleCountDown.cricleCount(option3);
