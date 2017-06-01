@@ -7,8 +7,8 @@
 - 依赖
 
 ```
-jquery.js，raphael.js
-              
+jquery.js, raphael.js, timeCircle.js, timeCircle.css
+              
 ```
 
 - 调用
