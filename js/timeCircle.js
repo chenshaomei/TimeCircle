@@ -44,25 +44,25 @@
 
 			function CountDown(option){
 				console.log(option)
-				this.oCircle = option.cricle; 									  // 圆环
-				this.oWrap = option.parent; 									  // 承载圆环容器
-				this.totalTime = option.totalTime;	   							  // 总的时间s
-				this.remainTime = option.remainTime;							  // 剩余时间 = 结束时间 - 开始时间s
-				this.startTime = option.startTime || 0;							  // 开始时间 时间戳ms
-				this.endTime = option.endTime || 0;								  // 结束时间 时间戳ms
-				this.currentTime = option.currentTime || 0;						  // 当前时间 时间戳ms
-				this.animateType = option.animateType || 'add';					  // 倒计时动画类型 add cut
-				this.endTxt = option.endTxt || '已结束';							  // 倒计时结束文字
-				this.changeTime = option.changeTime || -1000; 					  // 剩余多长时间改变颜色
-				this.changeColor = option.changeColor || '#ff6600';				  // 剩余x秒后，变成的颜色
-
-				this.countMoveScale = 100/this.totalTime; 					      // 圆环倒计时每秒运动的距离
-				this.startRmainTime = (this.currentTime - this.startTime)/1000;   // 还剩多久才开始s
-				this.pastTime = this.totalTime - this.remainTime;   		      // 圆环倒计时已经过去的时间
-				this.addNowTotalTime = this.pastTime*this.countMoveScale  || 0;   // 增加类型 的当前
-				this.cutNowTotalTime = this.remainTime*this.countMoveScale  || 0; // 减少类型 的当前				
-				this.callBack = option.callBack || null; 						  // 倒计时结束，回调函数
-				this.timeTxtAlign  = option.timeTxtAlign ||'horizontal'; 		  // 文字对齐方式
+				this.oCircle = option.cricle; 									      // 圆环
+				this.oWrap = option.parent; 									      // 承载圆环容器
+				this.totalTime = option.totalTime;	   							      // 总的时间s
+				this.remainTime = option.remainTime;							      // 剩余时间 = 结束时间 - 开始时间s
+				this.startTime = option.startTime || 0;							      // 开始时间 时间戳ms
+				this.endTime = option.endTime || 0;								      // 结束时间 时间戳ms
+				this.currentTime = option.currentTime || 0;						      // 当前时间 时间戳ms
+				this.animateType = option.animateType || 'add';					      // 倒计时动画类型 add cut
+				this.endTxt = option.endTxt || '已结束';							      // 倒计时结束文字
+				this.changeTime = option.changeTime || -1000; 					      // 剩余多长时间改变颜色
+				this.changeColor = option.changeColor || '#ff6600';				      // 剩余x秒后，变成的颜色
+    
+				this.countMoveScale = 100/this.totalTime; 					          // 圆环倒计时每秒运动的距离
+				this.startRmainTime = (this.currentTime - this.startTime)/1000;       // 还剩多久才开始s
+				this.pastTime = this.totalTime - this.remainTime;   		          // 圆环倒计时已经过去的时间
+				this.addNowTotalTime = this.pastTime*this.countMoveScale || 0.0001;   // 增加类型 的当前
+				this.cutNowTotalTime = this.remainTime*this.countMoveScale || 0.0001; // 减少类型 的当前				
+				this.callBack = option.callBack || null; 						      // 倒计时结束，回调函数
+				this.timeTxtAlign  = option.timeTxtAlign ||'horizontal'; 		      // 文字对齐方式
 				this.oTxt = $('<div class="process-txt"></div>');
 				this.oWrap.append(this.oTxt);
 
@@ -119,43 +119,55 @@
 
 				// 增加方式的倒计时
 				addCountDown: function() {
-					var _this = this;
-					var timer = setInterval(function(){
-						_this.addNowTotalTime += _this.countMoveScale;
-
-						_this.coutMove(_this.addNowTotalTime, timer, 'add');
-
-					}, 1000);
+					this.coutMove(this.addNowTotalTime, 'add');
 				},
 
 				// 减少方式的倒计时
 				cutCountDown: function() {
-					var _this = this;
-					var timer = setInterval(function(){
-						_this.cutNowTotalTime -= _this.countMoveScale;
-						_this.coutMove(_this.cutNowTotalTime, timer, 'cut');
-
-					}, 1000);
+					this.coutMove(this.cutNowTotalTime, 'cut');
 				},
 
 				// 倒计时公共fn
-				coutMove: function(nowTotalTime, timer, type){
-					this.remainTime--;
-            		if(this.remainTime == 0){
-            			if(type == 'add'){
-            				nowTotalTime = 100;
+				coutMove: function(nowTotalTime, type){
+
+            		var _this = this;
+            		var startT = new Date().getTime();
+					var countD = 0;
+					function fixedCount(){
+						// 进度条加减运算
+						if(type == 'add'){
+							nowTotalTime += _this.countMoveScale;
+						}else{
+							nowTotalTime -= _this.countMoveScale;
+						}
+						
+						_this.remainTime--;
+						// 结束时，修复计算误差直接到终点
+            			if(_this.remainTime == 0){
+            				if(type == 'add'){
+            					nowTotalTime = 100;
+            				}else{
+            					nowTotalTime= 0;
+            				}	
+            			}
+            			_this.changeStatus(nowTotalTime,_this.remainTime);
+            			if(_this.remainTime == 0){
+							setTimeout(function(){
+								_this.callBack  && _this.callBack();
+							},50)
+            				_this.oWrap.find(_this.oTxt).html(_this.endTxt);
             			}else{
-            				nowTotalTime = 0;
-            			}	
-            		}
-            		this.changeStatus(nowTotalTime,this.remainTime);
-            		if(this.remainTime == 0){
-            			clearInterval(timer);
-						setTimeout(function(){
-							this.callBack  && this.callBack();
-						},50)
-            			this.oWrap.find(this.oTxt).html(this.endTxt);
-            		}
+            				countD ++;
+							var offset = new Date().getTime() - (startT + countD*1000);
+							var nextT = 1000 - offset;
+							if(nextT < 0){ nextT = 0; }
+							setTimeout(fixedCount,nextT);
+            			}
+						
+					}
+
+					setTimeout(fixedCount,1000);
+
 				},
 
 				// 改变状态
@@ -219,7 +231,7 @@
 					sW: 20,
 					color: "#3080ec",
 					bgColor:"#e5e5e5",
-					startProgressPos: 0
+					startProgressPos: 0.0001
 				}, option);
 	
 				var parent = option.parent;
